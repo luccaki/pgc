@@ -9,10 +9,10 @@ driver = get_driver(Provider.IPFS)
 container = driver.get_container("/ip4/127.0.0.1/tcp/5001")
 
 #res = container.add_json({"Teste": "teste?"})
-res = driver.upload_object(FILE_PATH,container)
-print(res)
+#res = driver.upload_object(FILE_PATH,container)
+#print(res)
 
-res = driver.get_object(container,'QmRACojSdFuqnyyfQZ9Zgiz6zrVCUX1JRkYZyvRGu1MCzG')
+res = driver.get_object(container,'QmQVhku8rWNC6MAtuZG1ic7Fxvt4mKutrTWwe1E4ZpXwhX')
 
 from PIL import Image
 import io
