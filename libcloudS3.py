@@ -5,7 +5,7 @@ from libcloud.storage.providers import get_driver
 FILE_PATH = "/home/luccaki/Desktop/pgc/image.jpeg"
 
 cls = get_driver(Provider.S3)
-driver = cls("AKIAZVX7SSUHPUDLGG52", "qdBnG8df3TyYHPbjc3F/rMQQ5K+UFDRkdmuDWRvz")
+driver = cls("", "")
 
 container = driver.get_container(container_name="pgc-luccaki")
 
