@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import os.path
+import io
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -9,7 +10,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly']
+SCOPES = ['https://www.googleapis.com/auth/drive']
 
 def main():
     """Shows basic usage of the Drive v3 API.
@@ -36,17 +37,50 @@ def main():
     try:
         service = build('drive', 'v3', credentials=creds)
 
-        # Call the Drive v3 API
-        results = service.files().list(
-            pageSize=10, fields="nextPageToken, files(id, name)").execute()
-        items = results.get('files', [])
+        from googleapiclient.http import MediaFileUpload
 
-        if not items:
-            print('No files found.')
-            return
-        print('Files:')
+        # Create a MediaFileUpload object for the file you want to upload
+        #file = open('image.jpeg', 'rb')
+        #media = MediaFileUpload('image.jpeg', mimetype='image/jpeg')
+#
+        ## Insert the file into the specified folder
+        #file_metadata = {'name': 'image.jpeg', 'parents':None}
+        #file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+        #print(F'File ID: {file.get("id")}')
+
+        #1Gx-TbeSkP2fcWSdbeSSFFm1R8OWHUfRG
+
+        from googleapiclient.http import MediaIoBaseDownload
+
+        file_name = 'image.jpeg'
+        file_id = ''
+        query =  f"name='{file_name}'"
+
+        results = service.files().list(q=query,fields="nextPageToken, files(id, name)").execute()
+        items = results.get("files", [])
+
+        # Iterate through the files and print the ID of the desired file
         for item in items:
-            print(u'{0} ({1})'.format(item['name'], item['id']))
+            if item['name'] == file_name:
+                print(item['id'])
+                file_id = item['id']
+
+        request = service.files().get_media(fileId=file_id)
+        fh = io.BytesIO()
+        downloader = MediaIoBaseDownload(fh, request)
+        done = False
+
+        while done is False:
+            status, done = downloader.next_chunk()
+            print(F'Download {int(status.progress() * 100)}.')
+
+        with open(f"/home/luccaki/Desktop/pgc/{file_name}", "wb") as f:
+            fh.seek(0)
+            f.write(fh.read())
+
+        #delete file
+        service.files().delete(fileId=file_id).execute()
+        print(f'File with ID: {file_id} was deleted successfully')
     except HttpError as error:
         # TODO(developer) - Handle errors from drive API.
         print(f'An error occurred: {error}')
