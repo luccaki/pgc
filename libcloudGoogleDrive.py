@@ -1,22 +1,20 @@
 from libcloud.storage.types import Provider
 from libcloud.storage.providers import get_driver
+import json
 
+# Path to a very large file you want to upload
 FILE_PATH = "/home/luccaki/Desktop/pgc/image.jpeg"
 
 driver = get_driver(Provider.GOOGLE_DRIVE)
-#driver = cls()
 
-container = driver.get_container("/ip4/127.0.0.1/tcp/5001")
+container = driver.get_container('credentials.json')
 
-#res = container.add_json({"Teste": "teste?"})
-res = driver.upload_object(FILE_PATH,container)
-print(res)
+extra = {"content_type": "image/jpeg"}
 
-res = driver.get_object(container,'QmRACojSdFuqnyyfQZ9Zgiz6zrVCUX1JRkYZyvRGu1MCzG')
+driver.upload_object(file_path='image.jpeg', container=container,extra=extra,object_name='image.jpeg')
 
-from PIL import Image
-import io
-image = Image.open(io.BytesIO(res))
-image.show()
+obj = driver.get_object(container=container, object_name='image.jpeg')
+print(obj)
+driver.download_object(obj=obj,destination_path='/home/luccaki/Desktop/pgc/')
 
-#print(container.cat(res))
+driver.delete_object(obj=obj)
