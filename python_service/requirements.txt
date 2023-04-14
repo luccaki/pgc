@@ -9,6 +9,7 @@ aniso8601==8.1.0
 blinker==1.4
 certifi==2020.12.5
 Flask==1.1.2
+flask_cors==3.0.10
 Flask-Jsonpify==1.5.0
 flask-requests==0.0.14
 Flask-RESTful==0.3.8
