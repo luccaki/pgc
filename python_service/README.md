@@ -1,1 +1,1 @@
-docker-compose up --build --scale app=1
+docker-compose up --remove-orphans --build --scale app=1 --scale app_s3=1

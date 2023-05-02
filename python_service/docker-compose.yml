@@ -9,7 +9,14 @@ services:
         - 80:80
     depends_on:
         - app
+        - app_s3
   app:
     build:
       context: .
       dockerfile: Dockerfile
+    depends_on:
+        - app_s3
+  app_s3:
+    build:
+      context: .
+      dockerfile: Dockerfile.S3

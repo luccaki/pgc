@@ -1,0 +1,12 @@
+FROM python:3.8-slim-buster
+RUN pip install --upgrade pip
+
+WORKDIR /src
+COPY ./src /src
+# Install dependencies:
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+EXPOSE 3002
+COPY /src/app_s3.py .
+# Run the application:
+CMD python app_s3.py
