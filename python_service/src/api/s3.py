@@ -10,12 +10,11 @@ def post_file(container_name):
         access_key = request.headers.get('Access-Key')
         secret_key = request.headers.get('Secret-Key')
         file = request.files['file']
-        body = request.form
         cls = get_driver(Provider.S3)
         driver = cls(access_key, secret_key)
         container = driver.get_container(container_name=container_name)
         extra = {"content_type": "application/octet-stream", "acl": "public-read"}
-        obj = driver.upload_object_via_stream(iterator=file, container=container, object_name=body.get('file_name'), extra=extra)
+        obj = driver.upload_object_via_stream(iterator=file, container=container, object_name=file.filename, extra=extra)
         return f'Uploaded file: {obj.name}'
     except Exception as e:
         return f'Internal ERROR: {str(e)}', 500

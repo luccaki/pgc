@@ -7,7 +7,7 @@ COPY ./src /src
 COPY requirements.txt .
 RUN pip install -e /src/lib/libcloud
 RUN pip install -r requirements.txt
-EXPOSE 3002
-COPY /src/app_s3.py .
+EXPOSE 3003
+COPY /src/app_google_drive.py .
 # Run the application:
-CMD python app_s3.py
+CMD python app_google_drive.py

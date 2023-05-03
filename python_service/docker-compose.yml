@@ -10,13 +10,19 @@ services:
     depends_on:
         - app
         - app_s3
+        - app_google_drive
   app:
     build:
       context: .
       dockerfile: Dockerfile
     depends_on:
         - app_s3
+        - app_google_drive
   app_s3:
     build:
       context: .
       dockerfile: Dockerfile.S3
+  app_google_drive:
+    build:
+      context: .
+      dockerfile: Dockerfile.GoogleDrive
