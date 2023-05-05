@@ -1,1 +1,1 @@
-docker-compose up --remove-orphans --build --scale app=1 --scale app_s3=1 --scale app_google_drive=1
+docker-compose up --remove-orphans --build --scale app=1 --scale app_s3=1 --scale app_google_drive=1 --scale app_ipfs=1

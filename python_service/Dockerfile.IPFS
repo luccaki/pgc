@@ -1,0 +1,13 @@
+FROM python:3.8-slim-buster
+RUN pip install --upgrade pip
+
+WORKDIR /src
+COPY ./src /src
+# Install dependencies:
+COPY requirements.txt .
+RUN pip install -e /src/lib/libcloud
+RUN pip install -r requirements.txt
+EXPOSE 3004
+COPY /src/app_ipfs.py .
+# Run the application:
+CMD python app_ipfs.py

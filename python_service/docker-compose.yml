@@ -11,6 +11,7 @@ services:
         - app
         - app_s3
         - app_google_drive
+        - app_ipfs
   app:
     build:
       context: .
@@ -18,6 +19,7 @@ services:
     depends_on:
         - app_s3
         - app_google_drive
+        - app_ipfs
   app_s3:
     build:
       context: .
@@ -26,3 +28,20 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.GoogleDrive
+  app_ipfs:
+    build:
+      context: .
+      dockerfile: Dockerfile.IPFS
+    depends_on:
+      - ipfs_node
+  ipfs_node:
+    image: ipfs/go-ipfs
+    ports:
+      - "4001:4001"
+      - "8080:8080"
+      - "5001:5001"
+    volumes:
+      - ipfs-data:/data/ipfs
+
+volumes:
+  ipfs-data:

@@ -39,7 +39,6 @@ def get_file(file_name):
         container = driver.get_container(credentilas)
         obj = driver.get_object(container=container, object_name=file_name)
         file_stream = driver.download_object_as_stream(obj)
-        file_stream.seek(0)
         response = Response(file_stream, content_type="application/octet-stream")
         response.headers.set('Content-Disposition', 'attachment', filename=file_name)
         return response
