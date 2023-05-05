@@ -5,6 +5,7 @@ WORKDIR /src
 COPY ./src /src
 # Install dependencies:
 COPY requirements.txt .
+COPY .env .
 RUN pip install -r requirements.txt
 EXPOSE 3001
 COPY /src/app.py .
