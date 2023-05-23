@@ -16,6 +16,7 @@ idna==2.10
 itsdangerous==1.1.0
 Jinja2==2.11.2
 pampy==0.3.0
+pybreaker==1.0.1
 python-dotenv==1.0.0
 pytz==2020.4
 requests==2.26.0

@@ -1,7 +1,11 @@
 import requests
 from flask import Response
 from utils.credentials import get_s3_credentials, get_google_credentials
+import pybreaker
 
+post_service_breaker = pybreaker.CircuitBreaker(fail_max=3, reset_timeout=60)
+
+@post_service_breaker
 def post_service(provider, file):
     if(provider == 's3'):
         credentials = get_s3_credentials()
@@ -25,8 +29,9 @@ def post_service(provider, file):
         url = 'http://app_ipfs:3004/ipfs/v1/file'
         headers = {}
     else:
-        return f'Wrong provider specified! ({provider})', 400
+        return Response(f'Wrong provider specified! ({provider})', 400)
     
     files = {'file': (file.filename, file)}
     response = requests.post(url, headers=headers, files=files)
+    response.raise_for_status()
     return Response(response, response.status_code)
