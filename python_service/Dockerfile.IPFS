@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt
 EXPOSE 3004
 COPY /src/app_ipfs.py .
 # Run the application:
-CMD python app_ipfs.py
+CMD gunicorn --bind 0.0.0.0:3004 app_ipfs:app

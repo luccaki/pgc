@@ -10,4 +10,4 @@ RUN pip install -r requirements.txt
 EXPOSE 3002
 COPY /src/app_s3.py .
 # Run the application:
-CMD python app_s3.py
+CMD gunicorn --bind 0.0.0.0:3002 app_s3:app
