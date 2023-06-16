@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from services.file_services import *
 import pybreaker
+from utils.limiter import limiter
     
 master_route = Blueprint('master_route', __name__)
 
@@ -12,3 +13,8 @@ def post_file(provider):
         return res
     except pybreaker.CircuitBreakerError:
         return f'System Unstable! Please retry again later!', 500
+    
+@master_route.route("/free", methods=['get'])
+@limiter.exempt
+def get_Free():
+    return f'Freeeee', 200

@@ -1,8 +1,10 @@
 from flask import Flask
 from flask_cors import CORS
 from api.master import master_route
+from utils.limiter import limiter
 
 app = Flask(__name__)
+limiter.init_app(app)
 app.register_blueprint(master_route)
 
 CORS(app)
