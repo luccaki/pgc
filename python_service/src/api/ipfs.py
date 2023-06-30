@@ -2,8 +2,9 @@ from flask import Blueprint, request, Response
 from libcloud.storage.types import Provider, ObjectDoesNotExistError
 from libcloud.storage.providers import get_driver
 import json
+import socket
 
-IP_IPFS_NODE = "/ip4/172.27.0.2/tcp/5001"
+IP_IPFS_NODE = f"/ip4/{socket.gethostbyname('ipfs_node')}/tcp/5001"
 
 ipfs_route = Blueprint('ipfs_route', __name__)
 
