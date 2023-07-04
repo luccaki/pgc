@@ -10,4 +10,5 @@ RUN pip install -r requirements.txt
 EXPOSE 3001
 COPY /src/app.py .
 # Run the application:
-CMD gunicorn --bind 0.0.0.0:3001 app:app
+#CMD gunicorn --bind 0.0.0.0:3001 app:app
+CMD python app.py

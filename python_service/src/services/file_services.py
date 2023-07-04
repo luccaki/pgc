@@ -5,7 +5,7 @@ import pybreaker
 
 post_service_breaker = pybreaker.CircuitBreaker(fail_max=3, reset_timeout=60)
 
-@post_service_breaker
+#@post_service_breaker
 def post_file_service(provider, file):
     if(provider == 's3'):
         credentials = get_s3_credentials()
