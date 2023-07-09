@@ -10,5 +10,5 @@ RUN pip install -r requirements.txt
 EXPOSE 3003
 COPY /src/app_google_drive.py .
 # Run the application:
-#CMD gunicorn --bind 0.0.0.0:3003 app_google_drive:app
-CMD python app_google_drive.py
+CMD gunicorn --bind 0.0.0.0:3003 --preload --workers 8 --worker-class gevent app_google_drive:app
+#CMD python app_google_drive.py

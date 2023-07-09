@@ -10,5 +10,5 @@ RUN pip install -r requirements.txt
 EXPOSE 3001
 COPY /src/app.py .
 # Run the application:
-#CMD gunicorn --bind 0.0.0.0:3001 app:app
-CMD python app.py
+CMD gunicorn --bind 0.0.0.0:3001 --preload --workers 8 --worker-class gevent app:app
+#CMD python app.py
