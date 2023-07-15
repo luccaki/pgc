@@ -1,4 +1,5 @@
 docker-compose up --remove-orphans --build --scale app=1 --scale app_s3=1 --scale app_google_drive=1 --scale app_ipfs=1
+docker stats --format "table {{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.PIDs}}"
 
 You need to create .env file like this:
 AWS_ACCESS_KEY = #AWS_CREDENTIALS

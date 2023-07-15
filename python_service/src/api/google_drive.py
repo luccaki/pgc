@@ -1,6 +1,6 @@
 import io
 from utils.credentials import get_credentials_from_header_google_drive
-from flask import Blueprint, request, Response, send_file
+from flask import Blueprint, request, Response
 from libcloud.storage.types import Provider, ObjectDoesNotExistError
 from libcloud.storage.providers import get_driver
 

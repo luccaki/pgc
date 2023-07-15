@@ -1,22 +1,22 @@
 from dotenv import load_dotenv
 import os
 
-def get_s3_credentials():
+def get_s3_header():
     load_dotenv()
     return {
-        'access_key': os.getenv("AWS_ACCESS_KEY"),
-        'secret_key': os.getenv("AWS_SECRET_KEY")
+        'Access-Key': os.getenv("AWS_ACCESS_KEY"),
+        'Secret-Key': os.getenv("AWS_SECRET_KEY")
     }
 
-def get_google_credentials():
+def get_google_header():
     load_dotenv()
     return {
-        'project_id': os.getenv("GCP_PROJECT_ID"),
-        'private_key_id': os.getenv("GCP_PRIVATE_KEY_ID"),
-        'private_key': os.getenv("GCP_PRIVATE_KEY"),
-        'client_email': os.getenv("GCP_CLIENT_EMAIL"),
-        'client_id': os.getenv("GCP_CLIENT_ID"),
-        'client_x509_cert_url': os.getenv("GCP_CLIENT_X509_CERT_URL")
+        'Project-Id': os.getenv("GCP_PROJECT_ID"),
+        'Private-Key-Id': os.getenv("GCP_PRIVATE_KEY_ID"),
+        'Private-Key': os.getenv("GCP_PRIVATE_KEY"),
+        'Client-Email': os.getenv("GCP_CLIENT_EMAIL"),
+        'Client-Id': os.getenv("GCP_CLIENT_ID"),
+        'Client-X509-Cert-Url': os.getenv("GCP_CLIENT_X509_CERT_URL")
     }
 
 def get_credentials_from_header_google_drive(request):

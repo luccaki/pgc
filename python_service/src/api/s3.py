@@ -37,7 +37,7 @@ def get_file(container_name, file_name):
         access_key, secret_key = get_credentials_from_header_s3(request)
         cls = get_driver(Provider.S3)
         driver = cls(access_key, secret_key)
-        container = driver.get_container(container_name=container_name)
+        container = driver.get_container(container_name)
         obj = driver.get_object(container_name=container.name, object_name=file_name)
         file_stream = driver.download_object_as_stream(obj)
         response = Response(file_stream, content_type="application/octet-stream")

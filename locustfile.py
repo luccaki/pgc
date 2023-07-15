@@ -22,15 +22,12 @@ class TestUser(HttpUser):
 
         self.client.post(f"/api/v1/{provider}/file", data=multipart_data, headers=headers, name="/post/file")
         self.client.get(f"/api/v1/{provider}/file/{file_name}", name="/get/file")
+        self.client.delete(f"/api/v1/{provider}/file/{file_name}", name="/delete/file")
 
     def on_start(self):
         global idle_users
         self.__user = idle_users.pop()
 
     def on_stop(self):
-        global provider
-        global file_path
-        file_name = f"{self.__user}_{file_path}"
-        self.client.delete(f"/api/v1/{provider}/file/{file_name}", name="/delete/file")
         global idle_users
         idle_users.add(self.__user)

@@ -1,49 +1,49 @@
 version: "3.3"
 services:
-  #nginx:
-  #  container_name: nginx
-  #  build:
-  #    context: .
-  #    dockerfile: Dockerfile.nginx
-  #  ports:
-  #      - 80:80
-  #  depends_on:
-  #      - app
-  #      - app_s3
-  #      - app_google_drive
-  #      - app_ipfs
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    ports:
+        - 80:80
+    depends_on:
+        - app
+        #- app_s3
+        - app_google_drive
+        #- app_ipfs
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "3001:3001"
+    #ports:
+    #  - "3001:3001"
     depends_on:
-        - app_s3
+        #- app_s3
         - app_google_drive
-        - app_ipfs
-  app_s3:
-    build:
-      context: .
-      dockerfile: Dockerfile.S3
+        #- app_ipfs
+  #app_s3:
+  #  build:
+  #    context: .
+  #    dockerfile: Dockerfile.S3
   app_google_drive:
     build:
       context: .
       dockerfile: Dockerfile.GoogleDrive
-  app_ipfs:
-    build:
-      context: .
-      dockerfile: Dockerfile.IPFS
-    depends_on:
-      - ipfs_node
-  ipfs_node:
-    image: ipfs/go-ipfs
-    ports:
-      - "4001:4001"
-      - "8080:8080"
-      - "5001:5001"
-    volumes:
-      - ipfs-data:/data/ipfs
+  #app_ipfs:
+  #  build:
+  #    context: .
+  #    dockerfile: Dockerfile.IPFS
+  #  depends_on:
+  #    - ipfs_node
+  #ipfs_node:
+  #  image: ipfs/go-ipfs
+  #  ports:
+  #    - "4001:4001"
+  #    - "8080:8080"
+  #    - "5001:5001"
+  #  volumes:
+  #    - ipfs-data:/data/ipfs
 
 volumes:
   ipfs-data:
