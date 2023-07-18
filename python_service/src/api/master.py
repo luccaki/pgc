@@ -9,9 +9,12 @@ master_route = Blueprint('master_route', __name__)
 
 post_service_breaker = pybreaker.CircuitBreaker(fail_max=3, reset_timeout=60)
 
+def get_user_identifier():
+    return request.headers.get('User-Key')
+
 #@post_service_breaker
 @master_route.route("/api/v1/<provider>/file", methods=['POST'])
-@limiter.exempt
+@limiter.limit("3 per minute", key_func=get_user_identifier)
 def post_file(provider):
     try:
         file = request.files['file']
@@ -38,7 +41,7 @@ def post_file(provider):
         return f'An error occurred: {str(e)}', 500
     
 @master_route.route("/api/v1/<provider>/file/<file_name>", methods=['GET'])
-@limiter.exempt
+@limiter.limit("3 per minute", key_func=get_user_identifier)
 def get_file(provider, file_name):
     try:
         if(provider == 's3'):
@@ -54,7 +57,7 @@ def get_file(provider, file_name):
             raise ValueError(f'Wrong provider specified! ({provider})')
         
         res = requests.get(url, headers=headers)
-        return Response(res.content, status=res.status_code, headers=dict(res.headers))
+        return Response(res, status=res.status_code, headers=dict(res.headers))
     except pybreaker.CircuitBreakerError:
         return f'System Unstable! Please retry again later!', 500
     except ValueError as e:
@@ -63,7 +66,7 @@ def get_file(provider, file_name):
         return f'An error occurred: {str(e)}', 500
     
 @master_route.route("/api/v1/<provider>/file/<file_name>", methods=['DELETE'])
-@limiter.exempt
+@limiter.limit("3 per minute", key_func=get_user_identifier)
 def delete_file(provider, file_name):
     try:
         if(provider == 's3'):

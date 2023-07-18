@@ -16,12 +16,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    #ports:
-    #  - "3001:3001"
+    ports:
+      - "3001:3001"
     depends_on:
+        - redis
         #- app_s3
         - app_google_drive
         #- app_ipfs
+        
   #app_s3:
   #  build:
   #    context: .
@@ -44,6 +46,10 @@ services:
   #    - "5001:5001"
   #  volumes:
   #    - ipfs-data:/data/ipfs
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
 
 volumes:
   ipfs-data:

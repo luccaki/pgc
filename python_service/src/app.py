@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
-from api.master import master_route
+from api.master import master_route, limiter
 from utils.limiter import limiter
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -14,4 +14,4 @@ app.register_blueprint(master_route)
 CORS(app)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0",port=3001,debug=True,threaded=True)
+    app.run(host="0.0.0.0",port=3001)

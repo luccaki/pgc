@@ -1,5 +1,6 @@
 from locust import HttpUser, task
 from requests_toolbelt import MultipartEncoder
+import time
 
 idle_users = {id for id in range(1, 65535)}
 provider = 'googledrive'
@@ -18,11 +19,29 @@ class TestUser(HttpUser):
             file_content = file.read()
 
         multipart_data = MultipartEncoder(fields={'file': (file_name, file_content)})
-        headers = {'Content-Type': multipart_data.content_type}
+        headers = {'Content-Type': multipart_data.content_type, 'User-Key': str(self.__user)}
 
-        self.client.post(f"/api/v1/{provider}/file", data=multipart_data, headers=headers, name="/post/file")
-        self.client.get(f"/api/v1/{provider}/file/{file_name}", name="/get/file")
-        self.client.delete(f"/api/v1/{provider}/file/{file_name}", name="/delete/file")
+        try:
+            post_res = self.client.post(f"/api/v1/{provider}/file", data=multipart_data, headers=headers, name="/post/file")
+            if post_res.status_code != 429:
+                post_res.raise_for_status()
+            else:
+                time.sleep(60)
+            get_res = self.client.get(f"/api/v1/{provider}/file/{file_name}", headers={'User-Key': str(self.__user)}, name="/get/file")
+            if get_res.status_code != 429:
+                get_res.raise_for_status()
+            else:
+                time.sleep(60)
+            delete_res = self.client.delete(f"/api/v1/{provider}/file/{file_name}", headers={'User-Key': str(self.__user)}, name="/delete/file")
+            if delete_res.status_code != 429:
+                delete_res.raise_for_status()
+            else:
+                time.sleep(60)
+        except Exception as e:
+            print("An error occurred:", e)
+            print("Number of Users:", self.environment.runner.user_count)
+            self.environment.runner.stop()
+            
 
     def on_start(self):
         global idle_users
