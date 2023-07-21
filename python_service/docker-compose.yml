@@ -1,17 +1,17 @@
 version: "3.3"
 services:
-  nginx:
-    container_name: nginx
-    build:
-      context: .
-      dockerfile: Dockerfile.nginx
-    ports:
-        - 80:80
-    depends_on:
-        - app
-        #- app_s3
-        - app_google_drive
-        #- app_ipfs
+  #nginx:
+  #  container_name: nginx
+  #  build:
+  #    context: .
+  #    dockerfile: Dockerfile.nginx
+  #  ports:
+  #      - 80:80
+  #  depends_on:
+  #      - app
+  #      #- app_s3
+  #      - app_google_drive
+  #      #- app_ipfs
   app:
     build:
       context: .
@@ -19,7 +19,7 @@ services:
     ports:
       - "3001:3001"
     depends_on:
-        - redis
+        #- redis
         #- app_s3
         - app_google_drive
         #- app_ipfs
@@ -46,10 +46,10 @@ services:
   #    - "5001:5001"
   #  volumes:
   #    - ipfs-data:/data/ipfs
-  redis:
-    image: redis:latest
-    ports:
-      - "6379:6379"
+  #redis:
+  #  image: redis:latest
+  #  ports:
+  #    - "6379:6379"
 
 volumes:
   ipfs-data:

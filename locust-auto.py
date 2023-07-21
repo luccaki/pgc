@@ -4,9 +4,9 @@ import pandas as pd
 
 result_df = pd.DataFrame()
 
-for n in range(30):
-    locust_process = subprocess.Popen("locust --headless -u 500 -H http://localhost --csv=teste".split())
-    time.sleep(180)
+for n in range(10):
+    locust_process = subprocess.Popen("locust --headless -u 2000 -r 2 -H http://localhost:3001 --csv=teste".split())
+    time.sleep(480)
     locust_process.send_signal(subprocess.signal.SIGINT)
     time.sleep(5)
     df = pd.read_csv("teste_stats_history.csv")

@@ -41,14 +41,15 @@ def post_file(provider):
         return f'An error occurred: {str(e)}', 500
     
 @master_route.route("/api/v1/<provider>/file/<file_name>", methods=['GET'])
-@limiter.limit("3 per minute", key_func=get_user_identifier)
+#@limiter.limit("3 per minute", key_func=get_user_identifier)
+@limiter.exempt()
 def get_file(provider, file_name):
     try:
         if(provider == 's3'):
             url = f'http://nginx/s3/v1/file/pgc-luccaki/{file_name}'
             headers = get_s3_header()
         elif(provider == 'googledrive'):
-            url = f'http://nginx/googledrive/v1/file/{file_name}'
+            url = f'http://app_google_drive:3003/googledrive/v1/file/{file_name}'
             headers = get_google_header()
         elif(provider == 'ipfs'):
             url = f'http://nginx/ipfs/v1/file/{file_name}'
