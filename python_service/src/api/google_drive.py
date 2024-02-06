@@ -1,6 +1,6 @@
 import io
 from utils.credentials import get_credentials_from_header_google_drive
-from flask import Blueprint, request, Response
+from flask import Blueprint, request, Response, current_app
 from libcloud.storage.types import Provider, ObjectDoesNotExistError
 from libcloud.storage.providers import get_driver
 
@@ -45,6 +45,7 @@ def get_file(file_name):
     except ObjectDoesNotExistError:
         return f'File not found: {file_name}', 404
     except Exception as e:
+        current_app.logger.error(str(e))
         return f'Internal ERROR: {str(e)}', 500
 
 @google_drive_route.route("/googledrive/v1/file/<file_name>", methods=['DELETE'])

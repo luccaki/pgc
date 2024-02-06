@@ -1,4 +1,4 @@
-from flask import Blueprint, request, Response
+from flask import Blueprint, request, Response, current_app
 from utils.credentials import *
 from utils.limiter import limiter
 import pybreaker
@@ -41,7 +41,7 @@ def post_file(provider):
         return f'An error occurred: {str(e)}', 500
     
 @master_route.route("/api/v1/<provider>/file/<file_name>", methods=['GET'])
-#@limiter.limit("3 per minute", key_func=get_user_identifier)
+#@limiter.limit("1 per minute", key_func=get_user_identifier)
 @limiter.exempt()
 def get_file(provider, file_name):
     try:
@@ -62,8 +62,10 @@ def get_file(provider, file_name):
     except pybreaker.CircuitBreakerError:
         return f'System Unstable! Please retry again later!', 500
     except ValueError as e:
+        current_app.logger.error(str(e))
         return f'Bad Request? {str(e)}', 400
     except Exception as e:
+        current_app.logger.error(str(e))
         return f'An error occurred: {str(e)}', 500
     
 @master_route.route("/api/v1/<provider>/file/<file_name>", methods=['DELETE'])
